@@ -1,0 +1,9 @@
+.chat{
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-row-gap: 30px;
+    padding-top: 20px;
+    padding-left: 20px;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+}
