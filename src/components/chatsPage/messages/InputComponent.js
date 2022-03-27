@@ -3,40 +3,31 @@ import { Input, Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import styles from './form.module.css';
 
-export const InputComponent = ({setList, list}) =>{
+export const InputComponent = ({chat, list}) =>{
     const [message, setMessage] = useState({
         text: ''
     });
 
-    function setListMessages(e){
-        e.preventDefault();
-        if(message){
-            setList([...list, message])
-            setMessage({
-                text: '',
-                date: '',
-                author: '',
-            })
-        }
-    }
-
     function setMessageFn(e){
         setMessage( {
             text: e.target.value,
-            date: new Date(),
+            date: Number(new Date()),
             author: 'User',
         })
     }
 
     useEffect(()=>{
-        const text = 'hi, im bot';
-        const lastMessage = list[list.length - 1];
         let time = null;
 
-        if(list.length > 0 && lastMessage.text !== text){
-            time = setTimeout(()=>{
-                setList([...list, {text, author: 'Bot', date: new Date()}])
-            },1500)
+        if(chat){
+            const text = 'hi, im bot';
+            const lastMessage = chat.chat[chat.chat.length - 1];
+
+            if(chat.chat.length > 0 && lastMessage.author !== 'Bot'){
+                time = setTimeout(()=>{
+                    chat.fnUpdateChat(list,{text, author: 'Bot', date: Number(new Date())})
+                },500)
+            }
         }
 
         return () =>{
@@ -47,8 +38,14 @@ export const InputComponent = ({setList, list}) =>{
     return(
         <form
             className={styles.form}
-            onSubmit={setListMessages}
-        >
+            onSubmit={(e) => {
+                e.preventDefault();
+                if(chat){
+                    chat.fnUpdateChat(list,message)
+                    setMessage({text: '', date: Number(new Date()), author: 'User'})
+                }else{
+                    return
+                }}}>
             <Input
                 className={styles.input}
                 value={message.text}

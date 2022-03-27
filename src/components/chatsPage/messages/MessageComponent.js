@@ -4,13 +4,15 @@ import cln from 'classnames';
 
 export const MessageComponent = ({list}) =>{
     const chatList = useRef('chatList');
+    console.log(list)
+    const chat = list.chat ?? [];
 
     useEffect(()=>{
-        chatList.current.scrollTo(0, 99999);
+        chatList.current.scrollTo(0, chatList.current.scrollHeight);
     })
     return(
         <ul className={styles.list} ref={chatList}>
-            {list.map(el=>(
+            {chat.map(el=>(
                 <li
                     key={el.date}
                     className={cln(styles.item, {
@@ -25,7 +27,7 @@ export const MessageComponent = ({list}) =>{
                     <p
                         className={styles.date}
                     >
-                        date: {el.date.toLocaleTimeString()}
+                        date: {new Date(el.date).toLocaleString()}
                     </p>
                 </li>
             ))}
