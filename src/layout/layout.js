@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import {Link, Routes} from 'react-router-dom';
 import {makeStyles} from "@material-ui/core/styles";
 
 const nav = [
@@ -78,7 +78,7 @@ export const Layout = () => {
     };
 
     return (
-        <AppBar position="fixed" style={{zIndex: 2000}}>
+        <AppBar position="relative" style={{zIndex: 2000}}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters >
                     <Typography
@@ -145,6 +145,7 @@ export const Layout = () => {
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
+
                                 <Link to={page.to}>
                                     {page.title}
                                 </Link>

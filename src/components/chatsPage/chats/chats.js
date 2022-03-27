@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Button from "@mui/material/Button";
-import {ListItemIcon, ListItemText} from "@material-ui/core";
+import { ListItemText} from "@material-ui/core";
 import ChatIcon from '@mui/icons-material/Chat';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import {MainChat} from "../messages";
+import {Route, Routes, useNavigate} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3),
+        padding: '0 24px 0 24px',
     },
 }));
 
@@ -41,15 +42,15 @@ export const Chats = () => {
     const classes = useStyles();
     const [listChats, setListChats] = useState([]);
     const [activeChat, setActiveChat] = useState(null);
+    const link = useNavigate();
 
-     function addChats(){
+    function addChats(){
          const id = Number(new Date());
          const chat = {
              id: id,
              chat: [],
              lastMessage: '',
              fnUpdateChat: (listChats, message) => {
-                 console.log(listChats)
                 const indexChat = listChats.findIndex(el => el.id === id)
                 const chat = listChats[indexChat];
                 const newList = listChats.slice();
@@ -73,6 +74,11 @@ export const Chats = () => {
         setListChats(newList);
     };
 
+    function openChat(el){
+        setActiveChat(el);
+        link('/chats/'+ el.id);
+    };
+
     return (
         <div className={classes.root}>
             <Drawer
@@ -90,7 +96,7 @@ export const Chats = () => {
                             <ListItem key={el.id}>
 
                                 <Button
-                                    onClick={()=>setActiveChat(el)}
+                                    onClick={()=>openChat(el)}
                                     startIcon={<ChatIcon style={{cursor: 'pointer'}}/>}
                                 />
 
@@ -116,7 +122,9 @@ export const Chats = () => {
                 </div>
             </Drawer>
             <main className={classes.content}>
-                {activeChat && <MainChat list={listChats} chat={activeChat}/>}
+                <Routes>
+                    <Route path=":id" element={<MainChat list={listChats} chat={activeChat}/>}/>
+                </Routes>
             </main>
         </div>
     );

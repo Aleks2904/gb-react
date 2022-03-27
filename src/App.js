@@ -25,7 +25,7 @@ function App() {
                       <Layout/>
                       <Routes>
                           <Route path="/" element={<HomePage/>}/>
-                          <Route path="/chats" element={<PageChats/>}/>
+                          <Route path="/chats/*" element={<PageChats/>}/>
                           <Route path="/developing" element={<DevelopPage/>}/>
                       </Routes>
                   </BrowserRouter>
