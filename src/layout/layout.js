@@ -24,6 +24,10 @@ const nav = [
         to: '/chats',
     },
     {
+        title: 'Профиль',
+        to: '/profile',
+    },
+    {
         title: 'page-developing',
         to: '/developing',
     },

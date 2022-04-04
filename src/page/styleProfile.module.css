@@ -1,0 +1,28 @@
+.sections {
+    height: 100%;
+    display: flex;
+    gap: 40px;
+}
+
+.description{
+    color: white;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+.name{
+    display: inline-block;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    margin-left: 10px;
+}
+
+.btn{
+    cursor: pointer !important;
+}
+
+.label{
+    color: white;
+    margin-bottom: 5px;
+}
