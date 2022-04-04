@@ -1,0 +1,25 @@
+.form{
+    position: relative;
+    display: flex;
+}
+
+.input{
+    color: white !important;
+    padding: 4px 50px 4px 16px;
+}
+
+.input::placeholder{
+    color: rgba(255,255,255,.9) !important;
+}
+
+.btn{
+    position: absolute !important;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: blue !important;
+}
+
+.btn * {
+    cursor: pointer;
+}
