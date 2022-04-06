@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Button from "@mui/material/Button";
-import { ListItemText} from "@material-ui/core";
+import { ListItemText } from "@material-ui/core";
 import ChatIcon from '@mui/icons-material/Chat';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import {MainChat} from "../messages";
 import {Route, Routes, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector } from "react-redux";
+import {changeChat} from "../../../store/chats/actions";
 
 const drawerWidth = 240;
 
@@ -39,43 +40,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Chats = () => {
+    const {chats} = useSelector((state) => state)
+    const dispatch = useDispatch();
+
     const classes = useStyles();
-    const [listChats, setListChats] = useState([]);
-    const [activeChat, setActiveChat] = useState(null);
     const link = useNavigate();
 
     function addChats(){
          const id = Number(new Date());
-         const chat = {
+         dispatch(changeChat([...chats,{
              id: id,
              chat: [],
              lastMessage: '',
-             fnUpdateChat: (listChats, message) => {
-                const indexChat = listChats.findIndex(el => el.id === id)
-                const chat = listChats[indexChat];
-                const newList = listChats.slice();
-                newList.splice(indexChat,1);
-                chat.chat.push(message);
-                chat.lastMessage = message.text;
-                newList.unshift(chat);
-                setListChats(newList);
+             fnUpdateChat: (message, chats) => {
+                 const indexChat = chats.findIndex(el => Number(el.id) === Number(id))
+                 const chat = chats[indexChat];
+                 const newList = chats.slice();
+                 newList.splice(indexChat, 1);
+                 chat.chat.push(message);
+                 chat.lastMessage = message.text;
+                 newList.unshift(chat);
+                 dispatch(changeChat(newList))
              }
-         }
-         const newListChat = [...listChats ?? []];
-         newListChat.push(chat)
-
-         setListChats(newListChat);
+         }]))
     };
 
     function removeChat(id) {
-        const indexRemoveChats = listChats.findIndex(el => el.id === id);
-        const newList = listChats.slice();
+        const indexRemoveChats = chats.findIndex(el => el.id === id);
+        const newList = chats.slice();
         newList.splice(indexRemoveChats, 1)
-        setListChats(newList);
+        link('/chats')
+        dispatch(changeChat(newList));
     };
 
     function openChat(el){
-        setActiveChat(el);
         link('/chats/'+ el.id);
     };
 
@@ -90,8 +88,8 @@ export const Chats = () => {
             >
                 <Toolbar />
                 <div className={classes.drawerContainer}>
-                    {listChats.length > 0 && <List>
-                        {listChats.map((el) => (
+                    {chats.length > 0 && <List>
+                        {chats.map((el) => (
 
                             <ListItem key={el.id}>
 
@@ -110,7 +108,7 @@ export const Chats = () => {
                             </ListItem>
                         ))}
                     </List>}
-                    {listChats.length === 0 &&
+                    {chats.length === 0 &&
                     <p style={{marginTop: '50px'}}>
                         Пусто :(
                     </p>
@@ -123,7 +121,7 @@ export const Chats = () => {
             </Drawer>
             <main className={classes.content}>
                 <Routes>
-                    <Route path=":id" element={<MainChat list={listChats} chat={activeChat}/>}/>
+                    <Route path=":id" element={<MainChat/>}/>
                 </Routes>
             </main>
         </div>

@@ -1,12 +1,17 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Input, Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import styles from './form.module.css';
+import {useSelector} from "react-redux";
+import {useParams} from "react-router";
 
-export const InputComponent = ({chat, list}) =>{
+export const InputComponent = () =>{
     const [message, setMessage] = useState({
         text: ''
     });
+    const { chats } = useSelector((state) => state)
+    const { id } = useParams();
+    const chat = chats.filter(el => Number(el.id) === Number(id))[0];
 
     function setMessageFn(e){
         setMessage( {
@@ -19,13 +24,13 @@ export const InputComponent = ({chat, list}) =>{
     useEffect(()=>{
         let time = null;
 
-        if(chat){
+        if(chat.chat){
             const text = 'hi, im bot';
             const lastMessage = chat.chat[chat.chat.length - 1];
 
             if(chat.chat.length > 0 && lastMessage.author !== 'Bot'){
                 time = setTimeout(()=>{
-                    chat.fnUpdateChat(list,{text, author: 'Bot', date: Number(new Date())})
+                    chat.fnUpdateChat({text, author: 'Bot', date: Number(new Date())}, chats)
                 },500)
             }
         }
@@ -41,7 +46,7 @@ export const InputComponent = ({chat, list}) =>{
             onSubmit={(e) => {
                 e.preventDefault();
                 if(chat){
-                    chat.fnUpdateChat(list,message)
+                    chat.fnUpdateChat(message, chats)
                     setMessage({text: '', date: Number(new Date()), author: 'User'})
                 }else{
                     return
