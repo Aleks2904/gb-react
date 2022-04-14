@@ -1,7 +1,8 @@
 import style from "../gloablStyle/globalStyle.css";
 import { Chats } from "../components";
-import {storeChats} from "../store";
+import { storeChats, persistSoreChat } from "../store";
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react'
 
 export const PageChats = () => {
     const body = document.querySelector('body');
@@ -10,7 +11,9 @@ export const PageChats = () => {
     return (
         <main className="main">
             <Provider store={storeChats} >
-                <Chats/>
+                <PersistGate persistor={persistSoreChat}>
+                    <Chats/>
+                </PersistGate>
             </Provider>
         </main>
     );

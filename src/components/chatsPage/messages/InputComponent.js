@@ -21,25 +21,6 @@ export const InputComponent = () =>{
         })
     }
 
-    useEffect(()=>{
-        let time = null;
-
-        if(chat.chat){
-            const text = 'hi, im bot';
-            const lastMessage = chat.chat[chat.chat.length - 1];
-
-            if(chat.chat.length > 0 && lastMessage.author !== 'Bot'){
-                time = setTimeout(()=>{
-                    chat.fnUpdateChat({text, author: 'Bot', date: Number(new Date())}, chats)
-                },500)
-            }
-        }
-
-        return () =>{
-            clearInterval(time)
-        }
-    })
-
     return(
         <form
             className={styles.form}

@@ -22,22 +22,20 @@ function App() {
 
       return (
           <div className="App">
-              <Provider store={store} >
-                  <ThemeProvider theme={theme}>
-                      <BrowserRouter>
-                          <Layout/>
-                          <Routes>
-                              <Route path="/" element={<HomePage/>}/>
+              <ThemeProvider theme={theme}>
+                  <BrowserRouter>
+                      <Layout/>
+                      <Routes>
+                          <Route path="/" element={<HomePage/>}/>
 
-                              <Route path="/chats/*" element={<PageChats/>}/>
+                          <Route path="/chats/*" element={<PageChats/>}/>
 
-                                <Route path="/profile" element={<ProfilePage/>}/>
+                          <Route path="/profile" element={<ProfilePage/>}/>
 
-                              <Route path="/developing" element={<DevelopPage/>}/>
-                          </Routes>
-                      </BrowserRouter>
-                  </ThemeProvider>
-              </Provider>
+                          <Route path="/developing" element={<DevelopPage/>}/>
+                      </Routes>
+                  </BrowserRouter>
+              </ThemeProvider>
           </div>
       );
 }
